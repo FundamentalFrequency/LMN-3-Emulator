@@ -1,32 +1,33 @@
 #pragma once
 
-// CMake builds don't use an AppConfig.h, so it's safe to include juce module headers
-// directly. If you need to remain compatible with Projucer-generated builds, and
-// have called `juce_generate_juce_header(<thisTarget>)` in your CMakeLists.txt,
-// you could `#include <JuceHeader.h>` here instead, to make all your module headers visible.
 #include <juce_gui_extra/juce_gui_extra.h>
 #include <juce_audio_basics/juce_audio_basics.h>
 #include <juce_audio_devices/juce_audio_devices.h>
+#include <juce_audio_utils/juce_audio_utils.h>
+#include "Encoder.h"
 
-//==============================================================================
-/*
-    This component lives inside our window, and this is where you should put all
-    your controls and content.
-*/
-class MainComponent   : public juce::Component, public juce::Button::Listener
+class MainComponent : public juce::Component, 
+public juce::Button::Listener,
+public Encoder::Listener,
+private juce::MidiKeyboardStateListener
 {
 public:
     //==============================================================================
     MainComponent();
+    ~MainComponent();
 
     //==============================================================================
     void paint(juce::Graphics&) override;
     void resized() override;
     void buttonClicked(juce::Button* button) override;
+    void encoderDoubleClicked(Encoder* encoder) override;
+    void encoderIncreased(Encoder* encoder) override;
+    void encoderDecreased(Encoder* encoder) override;
+
+    void handleNoteOn(juce::MidiKeyboardState*, int midiChannel, int midiNoteNumber, float velocity) override;
+    void handleNoteOff(juce::MidiKeyboardState*, int midiChannel, int midiNoteNumber, float velocity) override;
 
 private:
-    //==============================================================================
-    // Your private member variables go here...
     const double PX_TO_MM = 4;
     const double TOP_EDGE_PADDING = 10.4775;
     const double LEFT_EDGE_PADDING = TOP_EDGE_PADDING;
@@ -42,7 +43,7 @@ private:
     const double HYPERPIXEL_SCREEN_WIDTH = (HYPERPIXEL_WIDTH - 6);
 
     const double JOYSTICK_TOP_EDGE_PADDING = VERTICAL_KEY_SPACING;
-    const double JOYSTICK_LEFT_EDGE_PADDING = 0 * PX_TO_MM;
+    const double JOYSTICK_LEFT_EDGE_PADDING = 0;
     const double JOYSTICK_RIGHT_EDGE_PADDING = HORIZONTAL_KEY_SPACING;
     const double JOYSTICK_BOTTOM_EDGE_PADDING	= 0;
     const double ENCODER_SPACING = 7;
@@ -54,7 +55,45 @@ private:
     
     std::unique_ptr<juce::MidiOutput> defaultMIDIOutput;
     double startTime;
-    juce::TextButton testButton;
+
+    juce::OwnedArray<juce::TextButton> row0;
+    juce::OwnedArray<juce::TextButton> row1;
+    juce::OwnedArray<juce::TextButton> row2;
+    juce::OwnedArray<juce::TextButton> row3;
+    juce::OwnedArray<juce::TextButton> row4;
+
+    juce::OwnedArray<Encoder> encoders;
+
+    juce::Slider joystick;
+
+    juce::MidiKeyboardState keyboardState;         
+    juce::MidiKeyboardComponent keyboardComponent;  
+
+    void initializeRow0Buttons();
+    void setRow0ButtonsBounds();
+
+    void initializeRow1Buttons();
+    void setRow1ButtonsBounds();
+
+    void initializeRow2Buttons();
+    void setRow2ButtonsBounds();
+
+    void initializeRow3Buttons();
+    void setRow3ButtonsBounds();
+
+    void initializeRow4Buttons();
+    void setRow4ButtonsBounds();
+
+    void initializeEncoders();
+    void setEncodersBounds();
+
+    void setJoystickBounds();
+
+    void setMidiKeyboardBounds();
+
+    void sendCCMessage(int channel, int type, int value);
+
+    void removeListenersFromRow(juce::OwnedArray<juce::TextButton>* row);
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(MainComponent)
 };

@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.15)
 
-set(APP_NAME "LMN_3_MIDI_SIMULATOR")
+set(APP_NAME "LMN_3_MIDI_EMULATOR")
 
 project(${APP_NAME} VERSION 0.0.1)
 
@@ -12,12 +12,20 @@ juce_add_gui_app(${APP_NAME}
     # ICON_SMALL ...
     # DOCUMENT_EXTENSIONS ...           # Specify file extensions that should be associated with this app
     # COMPANY_NAME ...                  # Specify the name of the app's author
-    PRODUCT_NAME "LMN-3 MIDI Simulator")     # The name of the final executable, which can differ from the target name
+    PRODUCT_NAME "LMN-3 MIDI Emulator")     # The name of the final executable, which can differ from the target name
 
 target_sources(${APP_NAME}
     PRIVATE
         Source/Main.cpp
-        Source/MainComponent.cpp)
+        Source/MainComponent.cpp
+        Source/Encoder/Encoder.cpp
+)
+
+target_include_directories(${APP_NAME}
+    PUBLIC
+        Source/
+        Source/Encoder
+)
 
 target_compile_definitions(${APP_NAME}
     PRIVATE
@@ -48,6 +56,7 @@ target_link_libraries(${APP_NAME}
         juce::juce_gui_extra
         juce::juce_audio_basics
         juce::juce_audio_devices
+        juce::juce_audio_utils
     PUBLIC
         juce::juce_recommended_config_flags
         juce::juce_recommended_lto_flags
