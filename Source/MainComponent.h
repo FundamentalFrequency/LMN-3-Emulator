@@ -11,6 +11,7 @@ class MainComponent : public juce::Component,
     public juce::Button::Listener,
     public Encoder::Listener,
     public juce::Timer,
+    private juce::MidiInputCallback,
     private juce::MidiKeyboardStateListener {
 public:
     //==============================================================================
@@ -27,6 +28,8 @@ public:
 
     void handleNoteOn(juce::MidiKeyboardState*, int midiChannel, int midiNoteNumber, float velocity) override;
     void handleNoteOff(juce::MidiKeyboardState*, int midiChannel, int midiNoteNumber, float velocity) override;
+
+    void handleIncomingMidiMessage(juce::MidiInput* source, const juce::MidiMessage& message) override;
 
 private:
     const double PX_TO_MM = 4;
@@ -73,10 +76,34 @@ private:
     juce::TextEditor midiMessagesBox;
 
     juce::AudioDeviceManager deviceManager;   
-    int lastOutputIndex = 0;                  
 
+    int lastOutputIndex = 0;                  
     juce::ComboBox midiOutputList;                
     juce::Label midiOutputListLabel;
+
+    int lastInputIndex = 0;                  
+    juce::ComboBox midiInputList;                
+    juce::Label midiInputListLabel;
+
+    bool isAddingFromMidiInput = false;    
+
+     // This is used to dispach an incoming message to the message thread
+    class IncomingMessageCallback : public juce::CallbackMessage {
+    public:
+        IncomingMessageCallback(MainComponent *o, const juce::MidiMessage &m, const juce::String &s)
+                : owner(o), message(m), source(s) {}
+
+        void messageCallback() override {
+            if (owner != nullptr) {
+                owner->addMessageToList (message, source);
+            }
+                
+        }
+
+        Component::SafePointer<MainComponent> owner;
+        juce::MidiMessage message;
+        juce::String source;
+    };
 
     void initializeRow0Buttons();
     void setRow0ButtonsBounds();
@@ -106,8 +133,11 @@ private:
 
     void initializeMidiOutput();
     void setMidiOutput(int index);
-
+    void initializeMidiInput();
+    void setMidiInput(int index);
     void sendCCMessage(int channel, int type, int value);
+    void addMessageToList(const juce::MidiMessage& message, const juce::String& source);
+    void postMessageToList(const juce::MidiMessage& message, const juce::String& source);
 
     void removeListenersFromRow(juce::OwnedArray<juce::TextButton>* row);
 
@@ -117,7 +147,7 @@ private:
 
     void logMessage(const juce::String& m);
 
-    void addMessageToList(const juce::MidiMessage& message, const juce::String& source);
+    
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(MainComponent)
 };
