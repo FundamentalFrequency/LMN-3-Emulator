@@ -20,15 +20,10 @@ MainComponent::MainComponent():
     joystick.setTextBoxStyle(juce::Slider::TextEntryBoxPosition::NoTextBox, true, 0, 0);
     addAndMakeVisible(joystick);
 
-    keyboardComponent.setMidiChannel(MIDI_CHANNEL);
-    keyboardComponent.setLowestVisibleKey(53);
-    keyboardComponent.setAvailableRange(53, 76);
-    keyboardComponent.setBlackNoteLengthProportion(.5);
-    keyboardComponent.setBlackNoteWidthProportion(1.0);
-    keyboardComponent.setKeyWidth((KEY_WIDTH + HORIZONTAL_KEY_SPACING) * PX_TO_MM);
-    keyboardComponent.setKeyPressBaseOctave(5);
-    addAndMakeVisible(keyboardComponent);
-    keyboardState.addListener(this);
+    initializeKeyboard();
+
+    initializeMidiMessagesBox();
+    initializeMidiOutput();
 
     setSize(DEVICE_WIDTH * PX_TO_MM, DEVICE_HEIGHT * PX_TO_MM);
 }
@@ -43,6 +38,11 @@ MainComponent::~MainComponent() {
     }
 
     keyboardState.removeListener(this);
+}
+
+void MainComponent::timerCallback() {
+    stopTimer();
+    keyboardComponent.grabKeyboardFocus();
 }
 
 void MainComponent::removeListenersFromRow(juce::OwnedArray<juce::TextButton>* row) {
@@ -118,6 +118,69 @@ void MainComponent::initializeEncoders() {
     }
 }
 
+void MainComponent::initializeKeyboard() {
+    keyboardComponent.setWantsKeyboardFocus(true);
+    keyboardComponent.setColour(juce::MidiKeyboardComponent::whiteNoteColourId, getLookAndFeel().findColour(juce::ResizableWindow::backgroundColourId));
+    keyboardComponent.setColour(juce::MidiKeyboardComponent::shadowColourId, getLookAndFeel().findColour(juce::ResizableWindow::backgroundColourId));
+    keyboardComponent.setColour(juce::MidiKeyboardComponent::keySeparatorLineColourId, getLookAndFeel().findColour(juce::ResizableWindow::backgroundColourId));
+    keyboardComponent.setMidiChannel(MIDI_CHANNEL);
+    keyboardComponent.setLowestVisibleKey(53);
+    keyboardComponent.setAvailableRange(53, 76);
+    keyboardComponent.setBlackNoteLengthProportion(.5);
+    keyboardComponent.setBlackNoteWidthProportion(1.0);
+    keyboardComponent.setKeyWidth((KEY_WIDTH + HORIZONTAL_KEY_SPACING) * PX_TO_MM);
+    keyboardComponent.setKeyPressBaseOctave(5);
+    addAndMakeVisible(keyboardComponent);
+    keyboardState.addListener(this);
+    startTimer(500);
+}
+
+void MainComponent::initializeMidiMessagesBox() {
+    addAndMakeVisible(midiMessagesBox);
+    midiMessagesBox.setMultiLine(true);
+    midiMessagesBox.setReturnKeyStartsNewLine(true);
+    midiMessagesBox.setReadOnly(true);
+    midiMessagesBox.setScrollbarsShown(true);
+    midiMessagesBox.setCaretVisible(false);
+    midiMessagesBox.setPopupMenuEnabled(true);
+    midiMessagesBox.setColour(juce::TextEditor::backgroundColourId, juce::Colours::black);
+    midiMessagesBox.setColour(juce::TextEditor::outlineColourId, juce::Colours::black);
+    midiMessagesBox.setColour(juce::TextEditor::shadowColourId, juce::Colours::black);
+}
+
+void MainComponent::initializeMidiOutput() {
+    addAndMakeVisible(midiOutputListLabel);
+    midiOutputListLabel.setText("MIDI Output:", juce::dontSendNotification);
+    midiOutputListLabel.attachToComponent(&midiOutputList, true);
+
+    addAndMakeVisible(midiOutputList);
+    midiOutputList.setTextWhenNoChoicesAvailable("No MIDI Outputs Enabled");
+    auto midiOutputs = juce::MidiOutput::getAvailableDevices();
+
+    juce::StringArray midiOutputNames;
+
+    for (auto output : midiOutputs) {
+        midiOutputNames.add(output.name);
+    }
+        
+    midiOutputList.addItemList(midiOutputNames, 1);
+    midiOutputList.onChange = [this] { setMidiOutput(midiOutputList.getSelectedItemIndex()); };
+
+    setMidiOutput(0);
+
+    // if no enabled devices were found just use the first one in the list
+    if (midiOutputList.getSelectedId() == 0)
+        setMidiOutput(0);
+}
+
+void MainComponent::setMidiOutput(int index)
+{
+    auto list = juce::MidiOutput::getAvailableDevices();
+    auto newOuput = list[index];
+    deviceManager.setDefaultMidiOutputDevice(newOuput.identifier);
+    lastOutputIndex = index;
+}
+
 void MainComponent::paint(juce::Graphics& g) {
     // (Our component is opaque, so we must completely fill the background with a solid colour)
     g.fillAll(getLookAndFeel().findColour(juce::ResizableWindow::backgroundColourId));
@@ -132,6 +195,8 @@ void MainComponent::resized() {
     setEncodersBounds();
     setJoystickBounds();
     setMidiKeyboardBounds();
+    setMidiMessagesBoxBounds();
+    midiOutputList.setBounds(LEFT_EDGE_PADDING * PX_TO_MM + 50, 5, 5 * KEY_WIDTH * PX_TO_MM, VERTICAL_KEY_SPACING * PX_TO_MM);
 }
 
 void MainComponent::setRow0ButtonsBounds() {
@@ -201,13 +266,20 @@ void MainComponent::setEncodersBounds() {
 }
 
 void MainComponent::setMidiKeyboardBounds() {
-    double x = (LEFT_EDGE_PADDING + (2 * KEY_WIDTH) + (2 * HORIZONTAL_KEY_SPACING)) * PX_TO_MM;
-    double y = (TOP_EDGE_PADDING + 3 * (KEY_HEIGHT + VERTICAL_KEY_SPACING))  * PX_TO_MM;
+    double x = (LEFT_EDGE_PADDING + (2 * KEY_WIDTH) + (1.5 * HORIZONTAL_KEY_SPACING)) * PX_TO_MM;
+    double y = (TOP_EDGE_PADDING + (3 * KEY_HEIGHT) + (2.5 * VERTICAL_KEY_SPACING))  * PX_TO_MM;
     double width = ((14 * KEY_WIDTH) + (14 * HORIZONTAL_KEY_SPACING)) * PX_TO_MM;
-    double height = ((2 * KEY_HEIGHT) + VERTICAL_KEY_SPACING) * PX_TO_MM;
+    double height = ((2 * KEY_HEIGHT) + (2 *VERTICAL_KEY_SPACING)) * PX_TO_MM;
     keyboardComponent.setBounds(x, y, width, height);
 }
 
+void MainComponent::setMidiMessagesBoxBounds() {
+    double x = LEFT_EDGE_PADDING * PX_TO_MM;
+    double y = TOP_EDGE_PADDING * PX_TO_MM;
+    double width = ((5 * KEY_WIDTH) + (4 * HORIZONTAL_KEY_SPACING)) * PX_TO_MM;
+    double height = ((3 * KEY_HEIGHT) + (2 *VERTICAL_KEY_SPACING)) * PX_TO_MM;
+    midiMessagesBox.setBounds(x, y, width, height);
+}
 
 void MainComponent::buttonClicked(juce::Button* button) {
     auto name = button->getName();
@@ -304,7 +376,7 @@ void MainComponent::encoderDecreased(Encoder* encoder) {
 void MainComponent::sendCCMessage(int channel, int type, int value) {
     auto message = juce::MidiMessage::controllerEvent(channel, type, value);
     message.setTimeStamp(juce::Time::getMillisecondCounterHiRes() * 0.001 - startTime);
-    defaultMIDIOutput->sendMessageNow(message);
+    deviceManager.getDefaultMidiOutput()->sendMessageNow(message);
 }
 
 void MainComponent::handleNoteOn(juce::MidiKeyboardState*, int midiChannel, int midiNoteNumber, float velocity) {
@@ -316,5 +388,54 @@ void MainComponent::handleNoteOff(juce::MidiKeyboardState*, int midiChannel, int
     auto m = juce::MidiMessage::noteOff (midiChannel, midiNoteNumber);
     m.setTimeStamp (juce::Time::getMillisecondCounterHiRes() * 0.001);
 }
+
+juce::String MainComponent::getMidiMessageDescription(const juce::MidiMessage& m) {
+    if (m.isNoteOn())           return "Note on "          + juce::MidiMessage::getMidiNoteName(m.getNoteNumber(), true, true, 3);
+    if (m.isNoteOff())          return "Note off "         + juce::MidiMessage::getMidiNoteName(m.getNoteNumber(), true, true, 3);
+    if (m.isProgramChange())    return "Program change "   + juce::String (m.getProgramChangeNumber());
+    if (m.isPitchWheel())       return "Pitch wheel "      + juce::String (m.getPitchWheelValue());
+    if (m.isAftertouch())       return "After touch "      + juce::MidiMessage::getMidiNoteName(m.getNoteNumber(), true, true, 3) +  ": " + juce::String(m.getAfterTouchValue());
+    if (m.isChannelPressure())  return "Channel pressure " + juce::String (m.getChannelPressureValue());
+    if (m.isAllNotesOff())      return "All notes off";
+    if (m.isAllSoundOff())      return "All sound off";
+    if (m.isMetaEvent())        return "Meta event";
+
+    if (m.isController())
+    {
+        juce::String name = juce::MidiMessage::getControllerName(m.getControllerNumber());
+        if (name.isEmpty())
+            name = "[" + juce::String (m.getControllerNumber()) + "]";
+
+        return "Controller " + name + ": " + juce::String(m.getControllerValue());
+    }
+
+    return juce::String::toHexString(m.getRawData(), m.getRawDataSize());
+}
+
+void MainComponent::logMessage(const juce::String& m) {
+    midiMessagesBox.moveCaretToEnd();
+    midiMessagesBox.insertTextAtCaret(m + juce::newLine);
+}
+
+void MainComponent::addMessageToList(const juce::MidiMessage& message, const juce::String& source) {
+    auto time = message.getTimeStamp() - startTime;
+
+    auto hours   = ((int) (time / 3600.0)) % 24;
+    auto minutes = ((int) (time / 60.0)) % 60;
+    auto seconds = ((int) time) % 60;
+    auto millis  = ((int) (time * 1000.0)) % 1000;
+
+    auto timecode = juce::String::formatted("%02d:%02d:%02d.%03d",
+                                                hours,
+                                                minutes,
+                                                seconds,
+                                                millis);
+
+    auto description = getMidiMessageDescription(message);
+
+    juce::String midiMessageString(timecode + "  -  " + description + " (" + source + ")"); // [7]
+    logMessage(midiMessageString);
+}
+
 
 

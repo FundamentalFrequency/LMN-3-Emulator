@@ -19,12 +19,14 @@ target_sources(${APP_NAME}
         Source/Main.cpp
         Source/MainComponent.cpp
         Source/Encoder/Encoder.cpp
+        Source/ButtonKeyboard/ButtonKeyboard.cpp
 )
 
 target_include_directories(${APP_NAME}
     PUBLIC
         Source/
         Source/Encoder
+        Source/ButtonKeyboard
 )
 
 target_compile_definitions(${APP_NAME}

@@ -5,12 +5,13 @@
 #include <juce_audio_devices/juce_audio_devices.h>
 #include <juce_audio_utils/juce_audio_utils.h>
 #include "Encoder.h"
+#include "ButtonKeyboard.h"
 
 class MainComponent : public juce::Component, 
-public juce::Button::Listener,
-public Encoder::Listener,
-private juce::MidiKeyboardStateListener
-{
+    public juce::Button::Listener,
+    public Encoder::Listener,
+    public juce::Timer,
+    private juce::MidiKeyboardStateListener {
 public:
     //==============================================================================
     MainComponent();
@@ -67,7 +68,15 @@ private:
     juce::Slider joystick;
 
     juce::MidiKeyboardState keyboardState;         
-    juce::MidiKeyboardComponent keyboardComponent;  
+    ButtonKeyboard keyboardComponent;  
+
+    juce::TextEditor midiMessagesBox;
+
+    juce::AudioDeviceManager deviceManager;   
+    int lastOutputIndex = 0;                  
+
+    juce::ComboBox midiOutputList;                
+    juce::Label midiOutputListLabel;
 
     void initializeRow0Buttons();
     void setRow0ButtonsBounds();
@@ -89,11 +98,26 @@ private:
 
     void setJoystickBounds();
 
+    void initializeKeyboard();
     void setMidiKeyboardBounds();
+
+    void initializeMidiMessagesBox();
+    void setMidiMessagesBoxBounds();
+
+    void initializeMidiOutput();
+    void setMidiOutput(int index);
 
     void sendCCMessage(int channel, int type, int value);
 
     void removeListenersFromRow(juce::OwnedArray<juce::TextButton>* row);
+
+    void timerCallback();
+
+    static juce::String getMidiMessageDescription(const juce::MidiMessage& m);
+
+    void logMessage(const juce::String& m);
+
+    void addMessageToList(const juce::MidiMessage& message, const juce::String& source);
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(MainComponent)
 };

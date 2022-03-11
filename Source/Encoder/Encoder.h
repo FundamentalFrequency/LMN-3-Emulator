@@ -2,12 +2,10 @@
 
 #include <juce_gui_extra/juce_gui_extra.h>
 
-class Encoder : public juce::Slider
-{
+class Encoder : public juce::Slider {
 public:
     Encoder();
     ~Encoder();
-    // void mouseDoubleClick(const juce::MouseEvent&) override;
     class Listener {
         public:
             virtual ~Listener() = default;
@@ -21,8 +19,6 @@ public:
 
     void mouseDoubleClick(const juce::MouseEvent&) override;
     void valueChanged() override;
-
-    // Todo add listener class
 private:
     juce::ListenerList <Listener> listeners;
     int previousValue = 0;
