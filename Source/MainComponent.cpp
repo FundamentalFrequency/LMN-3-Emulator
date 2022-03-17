@@ -7,6 +7,8 @@ MainComponent::MainComponent():
     keyboardComponent(keyboardState, juce::MidiKeyboardComponent::horizontalKeyboard) {
     DBG("Initialized with default Midi Device: " + defaultMIDIOutput->getDeviceInfo().name);
 
+    setLookAndFeel(&lookAndFeel);
+
     initializeRow0Buttons();
     initializeRow1Buttons();
     initializeRow2Buttons();
@@ -15,10 +17,7 @@ MainComponent::MainComponent():
 
     initializeEncoders();
 
-    joystick.setSliderStyle(juce::Slider::SliderStyle::RotaryHorizontalVerticalDrag);
-    joystick.setRange(-127, 127, .1);
-    joystick.setTextBoxStyle(juce::Slider::TextEntryBoxPosition::NoTextBox, true, 0, 0);
-    addAndMakeVisible(joystick);
+    initializeJoystick();
 
     initializeKeyboard();
 
@@ -39,6 +38,8 @@ MainComponent::~MainComponent() {
     }
 
     keyboardState.removeListener(this);
+
+    joystick.removeListener(this);
 }
 
 void MainComponent::timerCallback() {
@@ -52,9 +53,15 @@ void MainComponent::removeListenersFromRow(juce::OwnedArray<juce::TextButton>* r
     }
 }
 
+void MainComponent::configureButton(juce::TextButton* button) {
+    button->setConnectedEdges(juce::TextButton::ConnectedOnLeft | juce::TextButton::ConnectedOnRight);
+    button->setWantsKeyboardFocus(false);
+}
+
 void MainComponent::initializeRow0Buttons() {
      for (int i = 5; i <= 9; i++) {
         auto* button = new juce::TextButton();
+        configureButton(button);
         row0.add(button);
         button->addListener(this);
         button->setName("R0C" + std::to_string(i));
@@ -66,6 +73,7 @@ void MainComponent::initializeRow0Buttons() {
 void MainComponent::initializeRow1Buttons() {
      for (int i = 5; i <= 9; i++) {
         auto* button = new juce::TextButton();
+        configureButton(button);
         row1.add(button);
         button->addListener(this);
         button->setName("R1C" + std::to_string(i));
@@ -77,6 +85,7 @@ void MainComponent::initializeRow1Buttons() {
 void MainComponent::initializeRow2Buttons() {
      for (int i = 5; i <= 15; i++) {
         auto* button = new juce::TextButton();
+        configureButton(button);
         row2.add(button);
         button->addListener(this);
         button->setName("R2C" + std::to_string(i));
@@ -89,6 +98,7 @@ void MainComponent::initializeRow3Buttons() {
      for (int i = 3; i <= 15; i++) {
         if (i != 6 && i != 9 && i != 13) {
             auto* button = new juce::TextButton();
+            configureButton(button);
             row3.add(button);
             button->addListener(this);
             button->setName("R3C" + std::to_string(i));
@@ -101,6 +111,7 @@ void MainComponent::initializeRow3Buttons() {
 void MainComponent::initializeRow4Buttons() {
      for (int i = 2; i <= 15; i++) {
         auto* button = new juce::TextButton();
+         configureButton(button);
         row4.add(button);
         button->addListener(this);
         button->setName("R4C" + std::to_string(i));
@@ -115,8 +126,42 @@ void MainComponent::initializeEncoders() {
         encoders.add(encoder);
         encoder->setName("encoder" + std::to_string(i));
         encoder->addListener(this);
+        juce::Colour encoderColour;
+        switch (i) {
+            case 1:
+                encoderColour = lookAndFeel.blueColour;
+                break;
+            case 2:
+                encoderColour = lookAndFeel.greenColour;
+                break;
+            case 3:
+                encoderColour = lookAndFeel.whiteColour;
+                break;
+            case 4:
+                encoderColour = lookAndFeel.redColour;
+                break;
+            default:
+                encoderColour = lookAndFeel.blueColour;
+        }
+        encoder->setColour(Encoder::thumbColourId, encoderColour);
+        encoder->setColour(Encoder::rotarySliderFillColourId, encoderColour.darker(.7f));
+        encoder->setColour(Encoder::rotarySliderOutlineColourId, encoderColour.darker(.7f));
         addAndMakeVisible(encoder);
     }
+}
+
+void MainComponent::initializeJoystick() {
+    joystick.setSliderStyle(juce::Slider::SliderStyle::RotaryHorizontalVerticalDrag);
+    joystick.setScrollWheelEnabled(false);
+    joystick.setRange(0, 16383, 1);
+    double midpoint = joystick.getRange().getLength() / 2;
+    joystick.setValue(midpoint, juce::dontSendNotification);
+    joystick.setTextBoxStyle(juce::Slider::TextEntryBoxPosition::NoTextBox, true, 0, 0);
+    joystick.setColour(juce::Slider::thumbColourId, lookAndFeel.whiteColour);
+    joystick.setColour(juce::Slider::rotarySliderFillColourId, lookAndFeel.whiteColour.darker(.7f));
+    joystick.setColour(juce::Slider::rotarySliderOutlineColourId, lookAndFeel.whiteColour.darker(.7f));
+    joystick.addListener(this);
+    addAndMakeVisible(joystick);
 }
 
 void MainComponent::initializeKeyboard() {
@@ -138,22 +183,21 @@ void MainComponent::initializeKeyboard() {
 
 void MainComponent::initializeMidiMessagesBox() {
     addAndMakeVisible(midiMessagesBox);
+    numMessagesInEditor = 0;
     midiMessagesBox.setMultiLine(true);
     midiMessagesBox.setReturnKeyStartsNewLine(true);
     midiMessagesBox.setReadOnly(true);
     midiMessagesBox.setScrollbarsShown(true);
     midiMessagesBox.setCaretVisible(false);
     midiMessagesBox.setPopupMenuEnabled(true);
-    midiMessagesBox.setColour(juce::TextEditor::backgroundColourId, juce::Colours::black);
-    midiMessagesBox.setColour(juce::TextEditor::outlineColourId, juce::Colours::black);
-    midiMessagesBox.setColour(juce::TextEditor::shadowColourId, juce::Colours::black);
     midiMessagesBox.setFont(juce::Font(juce::Font::getDefaultMonospacedFontName(), 14, juce::Font::plain));
-    std::string logo = R"(.____       _____    _______            ________  
-|    |     /     \   \      \           \_____  \ 
-|    |    /  \ /  \  /   |   \   ______   _(__  < 
+    std::string logo = R"(
+.____       _____    _______            ________
+|    |     /     \   \      \           \_____  \
+|    |    /  \ /  \  /   |   \   ______   _(__  <
 |    |___/    Y    \/    |    \ /_____/  /       \
 |_______ \____|__  /\____|__  /         /______  /
-        \/       \/         \/                 \/ 
+        \/       \/         \/                 \/
 )";
     midiMessagesBox.setText(logo);
 
@@ -339,9 +383,9 @@ void MainComponent::setMidiKeyboardBounds() {
 }
 
 void MainComponent::setMidiMessagesBoxBounds() {
-    double x = 0;
+    double x = LEFT_EDGE_PADDING;
     double y = TOP_EDGE_PADDING * PX_TO_MM;
-    double width = ((5 * KEY_WIDTH) + (4 * HORIZONTAL_KEY_SPACING)  + LEFT_EDGE_PADDING) * PX_TO_MM;
+    double width = ((5 * KEY_WIDTH) + (5 * HORIZONTAL_KEY_SPACING)) * PX_TO_MM;
     double height = ((3 * KEY_HEIGHT) + (2 *VERTICAL_KEY_SPACING)) * PX_TO_MM;
     midiMessagesBox.setBounds(x, y, width, height);
 }
@@ -404,11 +448,11 @@ void MainComponent::encoderDoubleClicked(Encoder* encoder) {
     if (encoderName == "encoder1") {
         sendCCMessage(MIDI_CHANNEL, ENCODER_1_BUTTON, BUTTON_RELEASED);
     } else if (encoderName == "encoder2") {
-        sendCCMessage(MIDI_CHANNEL, ENCODER_2, BUTTON_RELEASED);
+        sendCCMessage(MIDI_CHANNEL, ENCODER_2_BUTTON, BUTTON_RELEASED);
     } else if (encoderName == "encoder3") {
-        sendCCMessage(MIDI_CHANNEL, ENCODER_3, BUTTON_RELEASED);
+        sendCCMessage(MIDI_CHANNEL, ENCODER_3_BUTTON, BUTTON_RELEASED);
     } else if (encoderName == "encoder4") {
-        sendCCMessage(MIDI_CHANNEL, ENCODER_4, BUTTON_RELEASED);
+        sendCCMessage(MIDI_CHANNEL, ENCODER_4_BUTTON, BUTTON_RELEASED);
     }
 }
 
@@ -484,8 +528,14 @@ juce::String MainComponent::getMidiMessageDescription(const juce::MidiMessage& m
 }
 
 void MainComponent::logMessage(const juce::String& m) {
+    if (numMessagesInEditor > MIDI_MESSAGE_BOX_MESSAGE_LIMIT) {
+        // For performance, reset the text of the editor after a good number of messages have been displayed
+        numMessagesInEditor = 0;
+        midiMessagesBox.setText("");
+    }
     midiMessagesBox.moveCaretToEnd();
     midiMessagesBox.insertTextAtCaret(m + juce::newLine);
+    numMessagesInEditor++;
 }
 
 void MainComponent::postMessageToList(const juce::MidiMessage& message, const juce::String& source)
@@ -493,7 +543,7 @@ void MainComponent::postMessageToList(const juce::MidiMessage& message, const ju
     (new IncomingMessageCallback(this, message, source))->post();
 }
 
-void MainComponent::addMessageToList(const juce::MidiMessage& message, const juce::String& source) {
+void MainComponent::addMessageToList(const juce::MidiMessage& message, const juce::String& /*source*/) {
     auto time = message.getTimeStamp() - startTime;
 
     auto hours   = ((int) (time / 3600.0)) % 24;
@@ -509,8 +559,35 @@ void MainComponent::addMessageToList(const juce::MidiMessage& message, const juc
 
     auto description = getMidiMessageDescription(message);
 
-    juce::String midiMessageString(timecode + "  -  " + description); // [7]
+    juce::String midiMessageString(timecode + "  -  " + description); 
     logMessage(midiMessageString);
+}
+
+void MainComponent::modifierKeysChanged(const juce::ModifierKeys &modifiers) {
+    if (modifiers.isCtrlDown()) {
+        // Ctrl was pressed
+        isCtrlDown = true;
+        sendCCMessage(MIDI_CHANNEL, CONTROL_BUTTON, BUTTON_PRESSED);
+    } else if (!modifiers.isCtrlDown() && isCtrlDown) {
+        // Ctrl was released
+        isCtrlDown = false;
+        sendCCMessage(MIDI_CHANNEL, CONTROL_BUTTON, BUTTON_RELEASED);
+    }
+}
+
+void MainComponent::sliderDragEnded(juce::Slider* slider) {
+    if (slider == &joystick) {
+        double midpoint = joystick.getRange().getLength() / 2;
+        joystick.setValue(midpoint, juce::sendNotification);
+    }
+}
+
+void MainComponent::sliderValueChanged(juce::Slider* slider) {
+    if (slider == &joystick) {
+        auto message = juce::MidiMessage::pitchWheel(MIDI_CHANNEL, joystick.getValue());
+        message.setTimeStamp(juce::Time::getMillisecondCounterHiRes() * 0.001 - startTime);
+        deviceManager.getDefaultMidiOutput()->sendMessageNow(message);
+    }
 }
 
 

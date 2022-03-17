@@ -6,33 +6,45 @@ ButtonKeyboard::ButtonKeyboard(juce::MidiKeyboardState &s, juce::MidiKeyboardCom
 ButtonKeyboard::~ButtonKeyboard() {
 }
 
-void ButtonKeyboard::drawWhiteNote(int midiNoteNumber,
+void ButtonKeyboard::drawWhiteNote(int /*midiNoteNumber*/,
                                    juce::Graphics &g,
                                    juce::Rectangle<float> area,
                                    bool isDown,
                                    bool isOver,
-                                   juce::Colour lineColour,
-                                   juce::Colour  textColour) {
-    auto colour = juce::Colours::blueviolet;
+                                   juce::Colour /*lineColour*/,
+                                   juce::Colour  /*textColour*/) {
+    auto colour = findColour(juce::TextButton::buttonColourId);
     if (isDown) colour = findColour(keyDownOverlayColourId);
     if (isOver) colour = colour.overlaidWith(findColour(mouseOverKeyOverlayColourId));
     g.setColour(colour);
     area.setY(area.getY() + (area.getHeight() / 2.0));
     area.setHeight(area.getHeight() / 2.0);
     area.reduce(5.05 * 4 / 2.0, 5.05 * 4 / 2.0);
-    g.fillRoundedRectangle(area, 10.0);
+    g.fillRect(area);
+
+    // Draw button outline
+    colour = findColour(buttonOutlineColourId);
+    g.setColour(colour);
+    g.drawRect(area);
+
 }
 
-void ButtonKeyboard::drawBlackNote(int midiNoteNumber,
+void ButtonKeyboard::drawBlackNote(int /*midiNoteNumber*/,
                                    juce::Graphics &g,
                                    juce::Rectangle<float> area,
                                    bool isDown,
                                    bool isOver,
-                                   juce::Colour  textColour) {
-    auto colour = juce::Colours::blueviolet;
+                                   juce::Colour  /*textColour*/) {
+
+    auto colour = findColour(juce::TextButton::buttonColourId);
     if (isDown) colour = findColour(keyDownOverlayColourId);
     if (isOver) colour = colour.overlaidWith(findColour(mouseOverKeyOverlayColourId));
     g.setColour(colour);
     area.reduce(5.05 * 4 / 2.0, 5.05 * 4 / 2.0);
-    g.fillRoundedRectangle(area, 10.0);
+    g.fillRect(area);
+
+    // Draw button outline
+    colour = findColour(buttonOutlineColourId);
+    g.setColour(colour);
+    g.drawRect(area);
 }

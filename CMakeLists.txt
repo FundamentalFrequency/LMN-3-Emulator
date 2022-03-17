@@ -20,6 +20,7 @@ target_sources(${APP_NAME}
         Source/MainComponent.cpp
         Source/Encoder/Encoder.cpp
         Source/ButtonKeyboard/ButtonKeyboard.cpp
+        Source/LookAndFeel/EmulatorLookAndFeel.cpp
 )
 
 target_include_directories(${APP_NAME}
@@ -27,6 +28,7 @@ target_include_directories(${APP_NAME}
         Source/
         Source/Encoder
         Source/ButtonKeyboard
+        Source/LookAndFeel
 )
 
 target_compile_definitions(${APP_NAME}

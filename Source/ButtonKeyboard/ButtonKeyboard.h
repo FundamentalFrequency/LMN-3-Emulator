@@ -7,6 +7,11 @@ public:
     ButtonKeyboard(juce::MidiKeyboardState &state, juce::MidiKeyboardComponent::Orientation orientation);
     ~ButtonKeyboard();
 
+	enum ButtonKeyboardColourIds {
+		buttonOutlineColourId = uint32_t(0)
+	};
+
+
     void drawWhiteNote(int midiNoteNumber,
 		               juce::Graphics &g,
 		               juce::Rectangle<float> area,

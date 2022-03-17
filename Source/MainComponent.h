@@ -6,10 +6,12 @@
 #include <juce_audio_utils/juce_audio_utils.h>
 #include "Encoder.h"
 #include "ButtonKeyboard.h"
+#include "EmulatorLookAndFeel.h"
 
 class MainComponent : public juce::Component, 
     public juce::Button::Listener,
     public Encoder::Listener,
+    public juce::Slider::Listener,
     public juce::Timer,
     private juce::MidiInputCallback,
     private juce::MidiKeyboardStateListener {
@@ -30,6 +32,11 @@ public:
     void handleNoteOff(juce::MidiKeyboardState*, int midiChannel, int midiNoteNumber, float velocity) override;
 
     void handleIncomingMidiMessage(juce::MidiInput* source, const juce::MidiMessage& message) override;
+
+    void modifierKeysChanged(const juce::ModifierKeys &modifiers) override;
+
+    void sliderDragEnded(juce::Slider* slider) override;
+    void sliderValueChanged(juce::Slider* slider) override;
 
 private:
     const double PX_TO_MM = 4;
@@ -56,6 +63,10 @@ private:
     const int NUM_ROWS = 5;
     const double DEVICE_WIDTH = (NUM_COLS * KEY_WIDTH) + ((NUM_COLS - 1) * HORIZONTAL_KEY_SPACING)  + LEFT_EDGE_PADDING + RIGHT_EDGE_PADDING;
     const double DEVICE_HEIGHT = (NUM_ROWS * KEY_HEIGHT) + ((NUM_ROWS - 1) * VERTICAL_KEY_SPACING) + TOP_EDGE_PADDING + BOTTOM_EDGE_PADDING;
+
+    const int MIDI_MESSAGE_BOX_MESSAGE_LIMIT = 100;
+    
+    EmulatorLookAndFeel lookAndFeel;
     
     std::unique_ptr<juce::MidiOutput> defaultMIDIOutput;
     double startTime;
@@ -74,6 +85,7 @@ private:
     ButtonKeyboard keyboardComponent;  
 
     juce::TextEditor midiMessagesBox;
+    int numMessagesInEditor = 0;
 
     juce::AudioDeviceManager deviceManager;   
 
@@ -86,6 +98,8 @@ private:
     juce::Label midiInputListLabel;
 
     bool isAddingFromMidiInput = false;    
+
+    bool isCtrlDown = false;
 
      // This is used to dispach an incoming message to the message thread
     class IncomingMessageCallback : public juce::CallbackMessage {
@@ -104,6 +118,8 @@ private:
         juce::MidiMessage message;
         juce::String source;
     };
+    
+    void configureButton(juce::TextButton* button);
 
     void initializeRow0Buttons();
     void setRow0ButtonsBounds();
@@ -123,6 +139,7 @@ private:
     void initializeEncoders();
     void setEncodersBounds();
 
+    void initializeJoystick();
     void setJoystickBounds();
 
     void initializeKeyboard();
