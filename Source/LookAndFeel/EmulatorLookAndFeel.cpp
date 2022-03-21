@@ -1,4 +1,3 @@
-
 #include "EmulatorLookAndFeel.h"
 #include "ButtonKeyboard.h"
 
@@ -33,4 +32,9 @@ EmulatorLookAndFeel::EmulatorLookAndFeel()
     setColour(juce::MidiKeyboardComponent::mouseOverKeyOverlayColourId, yellowColour.withMultipliedAlpha(.75));
     setColour(juce::MidiKeyboardComponent::keyDownOverlayColourId, yellowColour);
     setColour(ButtonKeyboard::buttonOutlineColourId, whiteColour);
+}
+
+juce::Font EmulatorLookAndFeel::getTextButtonFont(juce::TextButton&, int buttonHeight) {
+    fontAwesomeFont.setHeight(juce::jmin(16.0f, (float) buttonHeight * 0.6f));
+    return fontAwesomeFont;
 }

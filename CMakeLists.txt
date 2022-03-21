@@ -39,24 +39,17 @@ target_compile_definitions(${APP_NAME}
         JUCE_APPLICATION_NAME_STRING="$<TARGET_PROPERTY:${APP_NAME},JUCE_PRODUCT_NAME>"
         JUCE_APPLICATION_VERSION_STRING="$<TARGET_PROPERTY:${APP_NAME},JUCE_VERSION>")
 
-# If your target needs extra binary assets, you can add them here. The first argument is the name of
-# a new static library target that will include all the binary resources. There is an optional
-# `NAMESPACE` argument that can specify the namespace of the generated binary data class. Finally,
-# the SOURCES argument should be followed by a list of source files that should be built into the
-# static library. These source files can be of any kind (wav data, images, fonts, icons etc.).
-# Conversion to binary-data will happen when your target is built.
 
-# juce_add_binary_data(GuiAppData SOURCES ...)
+juce_add_binary_data(FontData HEADER_NAME FontData.h NAMESPACE FontData SOURCES
+    FontAwesome/FontAwesome6BrandsRegular400.otf
+    FontAwesome/FontAwesome6FreeSolid900.otf
+    FontAwesome/FontAwesome6FreeRegular400.otf
+)
 
-# `target_link_libraries` links libraries and JUCE modules to other libraries or executables. Here,
-# we're linking our executable target to the `juce::juce_gui_extra` module. Inter-module
-# dependencies are resolved automatically, so `juce_core`, `juce_events` and so on will also be
-# linked automatically. If we'd generated a binary data target above, we would need to link to it
-# here too. This is a standard CMake command.
 
 target_link_libraries(${APP_NAME}
     PRIVATE
-        # GuiAppData            # If we'd created a binary data target, we'd link to it here
+        FontData
         juce::juce_gui_extra
         juce::juce_audio_basics
         juce::juce_audio_devices

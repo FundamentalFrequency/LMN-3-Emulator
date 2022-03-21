@@ -65,7 +65,8 @@ void MainComponent::initializeRow0Buttons() {
         row0.add(button);
         button->addListener(this);
         button->setName("R0C" + std::to_string(i));
-        button->setButtonText("R0C" + std::to_string(i));
+        juce::String buttonText = row0Icons[i - 5];
+        button->setButtonText(buttonText);
         addAndMakeVisible(button);
     }
 }
@@ -77,7 +78,8 @@ void MainComponent::initializeRow1Buttons() {
         row1.add(button);
         button->addListener(this);
         button->setName("R1C" + std::to_string(i));
-        button->setButtonText("R1C" + std::to_string(i));
+        juce::String buttonText = row1Icons[i - 5];
+        button->setButtonText(buttonText);
         addAndMakeVisible(button);
     }
 }
@@ -89,7 +91,8 @@ void MainComponent::initializeRow2Buttons() {
         row2.add(button);
         button->addListener(this);
         button->setName("R2C" + std::to_string(i));
-        button->setButtonText("R2C" + std::to_string(i));
+        juce::String buttonText = row2Icons[i - 5];
+        button->setButtonText(buttonText);
         addAndMakeVisible(button);
     }
 }
@@ -102,7 +105,6 @@ void MainComponent::initializeRow3Buttons() {
             row3.add(button);
             button->addListener(this);
             button->setName("R3C" + std::to_string(i));
-            button->setButtonText("R3C" + std::to_string(i));
             addAndMakeVisible(button);
         }
     }
@@ -403,9 +405,9 @@ void MainComponent::buttonClicked(juce::Button* button) {
     } else if (name == "R0C7") {
         ccType = LOOP_OUT_BUTTON;
     } else if (name == "R0C8") {
-        ccType = LEFT_BUTTON;
+        ccType = PLUS_BUTTON;
     } else if (name == "R0C9") {
-        ccType = RIGHT_BUTTON;
+        ccType = MINUS_BUTTON;
     } else if (name == "R1C5") {
         ccType = CUT_BUTTON;
     } else if (name == "R1C6") {
@@ -413,7 +415,7 @@ void MainComponent::buttonClicked(juce::Button* button) {
     } else if (name == "R1C7") {
         ccType = SLICE_BUTTON;
     } else if (name == "R1C8") {
-        ;
+        ccType = SAVE_BUTTON;
     } else if (name == "R1C9") {
         ccType = UNDO_BUTTON;
     } else if (name == "R2C5") {

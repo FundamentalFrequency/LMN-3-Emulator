@@ -2,10 +2,15 @@
 #include <juce_gui_basics/juce_gui_basics.h>
 #include <juce_graphics/juce_graphics.h>
 #include <juce_audio_utils/juce_audio_utils.h>
+#include "FontData.h"
 
 class EmulatorLookAndFeel : public juce::LookAndFeel_V4 {
 public:
     EmulatorLookAndFeel();
+    juce::Font getTextButtonFont(juce::TextButton&, int buttonHeight) override;
+
+    juce::Typeface::Ptr fontAwesomeTypeface = juce::Typeface::createSystemTypefaceFor(FontData::FontAwesome6FreeSolid900_otf, FontData::FontAwesome6FreeSolid900_otfSize);
+    juce::Font fontAwesomeFont = juce::Font(fontAwesomeTypeface);
 
     juce::Colour blueColour = juce::Colour(0xff458588);
     juce::Colour greenColour = juce::Colour(0xff689d6a);

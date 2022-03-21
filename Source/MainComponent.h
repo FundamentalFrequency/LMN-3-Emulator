@@ -4,6 +4,7 @@
 #include <juce_audio_basics/juce_audio_basics.h>
 #include <juce_audio_devices/juce_audio_devices.h>
 #include <juce_audio_utils/juce_audio_utils.h>
+#include <juce_graphics/juce_graphics.h>
 #include "Encoder.h"
 #include "ButtonKeyboard.h"
 #include "EmulatorLookAndFeel.h"
@@ -76,6 +77,30 @@ private:
     juce::OwnedArray<juce::TextButton> row2;
     juce::OwnedArray<juce::TextButton> row3;
     juce::OwnedArray<juce::TextButton> row4;
+
+    juce::StringArray row0Icons = {juce::String::charToString(0xf363), 
+                                   juce::String::charToString(0xf08b), 
+                                   juce::String::charToString(0xf090), 
+                                   juce::String::charToString(0x2b), 
+                                   juce::String::charToString(0xf068)};
+
+    juce::StringArray row1Icons = {juce::String::charToString(0xf0c4), 
+                                   juce::String::charToString(0xf0ea), 
+                                   juce::String::charToString(0xf715), 
+                                   juce::String::charToString(0xf0c7),
+                                   juce::String::charToString(0xf2ea)};
+
+    juce::StringArray row2Icons = {"ctrl", 
+                                   juce::String::charToString(0xf8d9), 
+                                   juce::String::charToString(0xf04b), 
+                                   juce::String::charToString(0xf04d), 
+                                   juce::String::charToString(0xf013),
+                                   juce::String::charToString(0xf017),
+                                   juce::String::charToString(0xe473),
+                                   juce::String::charToString(0xe0e4),
+                                   juce::String::charToString(0xf1e6),
+                                   juce::String::charToString(0xf83e),
+                                   juce::String::charToString(0xf00a)};
 
     juce::OwnedArray<Encoder> encoders;
 
