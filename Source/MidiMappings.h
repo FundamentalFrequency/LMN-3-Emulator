@@ -11,7 +11,6 @@ static constexpr int TEMPO_BUTTON = 25;
 static constexpr int SAVE_BUTTON = 26;
 static constexpr int SETTINGS_BUTTON = 85;
 static constexpr int TRACKS_BUTTON = 86;
-static constexpr int METRONOME_BUTTON = 87;
 static constexpr int MIXER_BUTTON = 88;
 static constexpr int PLUGINS_BUTTON = 89;
 static constexpr int MODIFIERS_BUTTON = 90;
@@ -29,7 +28,6 @@ static constexpr int CONTROL_BUTTON = 112;
 static constexpr int OCTAVE_CHANGE = 117;
 static constexpr int PLUS_BUTTON = 118;
 static constexpr int MINUS_BUTTON = 119;
-
 
 static constexpr int ENCODER_INCREASED = 1;
 static constexpr int ENCODER_DECREASED = 127;

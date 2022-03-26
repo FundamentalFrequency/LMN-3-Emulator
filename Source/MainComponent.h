@@ -90,7 +90,7 @@ private:
                                    juce::String::charToString(0xf0c7),
                                    juce::String::charToString(0xf2ea)};
 
-    juce::StringArray row2Icons = {"ctrl", 
+    juce::StringArray row2Icons = {juce::String::charToString(0xf094), 
                                    juce::String::charToString(0xf8d9), 
                                    juce::String::charToString(0xf04b), 
                                    juce::String::charToString(0xf04d), 
