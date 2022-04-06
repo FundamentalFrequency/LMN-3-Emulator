@@ -405,9 +405,21 @@ void MainComponent::buttonClicked(juce::Button* button) {
     } else if (name == "R0C7") {
         ccType = LOOP_OUT_BUTTON;
     } else if (name == "R0C8") {
-        ccType = PLUS_BUTTON;
+        if (isCtrlDown) {
+            increaseOctave();
+            ccType = OCTAVE_CHANGE;
+            ccValue = getCCValueForCurrentOctave();
+        } else {
+            ccType = PLUS_BUTTON;
+        }
     } else if (name == "R0C9") {
-        ccType = MINUS_BUTTON;
+        if (isCtrlDown) {
+            decreaseOctave();
+            ccType = OCTAVE_CHANGE;
+            ccValue = getCCValueForCurrentOctave();
+        } else {
+            ccType = MINUS_BUTTON;
+        }
     } else if (name == "R1C5") {
         ccType = CUT_BUTTON;
     } else if (name == "R1C6") {
@@ -589,6 +601,23 @@ void MainComponent::sliderValueChanged(juce::Slider* slider) {
         auto message = juce::MidiMessage::pitchWheel(MIDI_CHANNEL, joystick.getValue());
         message.setTimeStamp(juce::Time::getMillisecondCounterHiRes() * 0.001 - startTime);
         deviceManager.getDefaultMidiOutput()->sendMessageNow(message);
+    }
+}
+
+int MainComponent::getCCValueForCurrentOctave() {
+    // Cant send negative numbers as a CC value
+    // -4 -> 0, -3 -> 1, ... 0 ->4, 4 -> 8
+    int offset = (OCTAVE_MAX - OCTAVE_MIN) / 2;
+    return currentOctave + offset;
+}
+void MainComponent::increaseOctave() {
+    if (currentOctave < OCTAVE_MAX) {
+        currentOctave++;
+    }
+}
+void MainComponent::decreaseOctave() {
+    if (currentOctave > OCTAVE_MIN) {
+        currentOctave--;
     }
 }
 

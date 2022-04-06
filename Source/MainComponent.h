@@ -66,7 +66,10 @@ private:
     const double DEVICE_HEIGHT = (NUM_ROWS * KEY_HEIGHT) + ((NUM_ROWS - 1) * VERTICAL_KEY_SPACING) + TOP_EDGE_PADDING + BOTTOM_EDGE_PADDING;
 
     const int MIDI_MESSAGE_BOX_MESSAGE_LIMIT = 100;
-    
+
+    const int OCTAVE_MAX = 4;
+    const int OCTAVE_MIN = -4;
+
     EmulatorLookAndFeel lookAndFeel;
     
     std::unique_ptr<juce::MidiOutput> defaultMIDIOutput;
@@ -125,6 +128,7 @@ private:
     bool isAddingFromMidiInput = false;    
 
     bool isCtrlDown = false;
+    int currentOctave = 0;
 
      // This is used to dispach an incoming message to the message thread
     class IncomingMessageCallback : public juce::CallbackMessage {
@@ -188,6 +192,10 @@ private:
     static juce::String getMidiMessageDescription(const juce::MidiMessage& m);
 
     void logMessage(const juce::String& m);
+
+    int getCCValueForCurrentOctave();
+    void increaseOctave();
+    void decreaseOctave();
 
     
 
