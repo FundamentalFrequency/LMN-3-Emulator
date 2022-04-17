@@ -5,7 +5,7 @@ Encoder::Encoder() {
     setRange(0.0, 127.0, 1.0);
     setValue(0.0);
     setTextBoxStyle(juce::Slider::TextEntryBoxPosition::NoTextBox, true, 0, 0);
-    setRotaryParameters(0, juce::MathConstants<double>::twoPi, false);
+    setRotaryParameters(0, juce::MathConstants<float>::twoPi, false);
 }
 
 Encoder::~Encoder() {

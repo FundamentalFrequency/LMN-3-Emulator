@@ -19,7 +19,7 @@ class MainComponent : public juce::Component,
 public:
     //==============================================================================
     MainComponent();
-    ~MainComponent();
+    ~MainComponent() override;
 
     //==============================================================================
     void paint(juce::Graphics&) override;
@@ -187,7 +187,7 @@ private:
 
     void removeListenersFromRow(juce::OwnedArray<juce::TextButton>* row);
 
-    void timerCallback();
+    void timerCallback() override;
 
     static juce::String getMidiMessageDescription(const juce::MidiMessage& m);
 

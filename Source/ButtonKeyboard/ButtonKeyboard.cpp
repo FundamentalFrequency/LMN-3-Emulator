@@ -17,9 +17,9 @@ void ButtonKeyboard::drawWhiteNote(int /*midiNoteNumber*/,
     if (isDown) colour = findColour(keyDownOverlayColourId);
     if (isOver) colour = colour.overlaidWith(findColour(mouseOverKeyOverlayColourId));
     g.setColour(colour);
-    area.setY(area.getY() + (area.getHeight() / 2.0));
-    area.setHeight(area.getHeight() / 2.0);
-    area.reduce(5.05 * 4 / 2.0, 5.05 * 4 / 2.0);
+    area.setY(static_cast<float>(area.getY() + (area.getHeight() / 2.0)));
+    area.setHeight(static_cast<float>(area.getHeight() / 2.0));
+    area.reduce(static_cast<float>(5.05 * 4 / 2.0), static_cast<float>(5.05 * 4 / 2.0));
     g.fillRect(area);
 
     // Draw button outline
@@ -40,7 +40,7 @@ void ButtonKeyboard::drawBlackNote(int /*midiNoteNumber*/,
     if (isDown) colour = findColour(keyDownOverlayColourId);
     if (isOver) colour = colour.overlaidWith(findColour(mouseOverKeyOverlayColourId));
     g.setColour(colour);
-    area.reduce(5.05 * 4 / 2.0, 5.05 * 4 / 2.0);
+    area.reduce(static_cast<float>(5.05 * 4 / 2.0), static_cast<float>(5.05 * 4 / 2.0));
     g.fillRect(area);
 
     // Draw button outline

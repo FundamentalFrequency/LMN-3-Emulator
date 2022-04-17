@@ -5,13 +5,13 @@
 class Encoder : public juce::Slider {
 public:
     Encoder();
-    ~Encoder();
+    ~Encoder() override;
     class Listener {
         public:
             virtual ~Listener() = default;
-            virtual void encoderDoubleClicked(Encoder* /*encoder*/) {};
-            virtual void encoderIncreased(Encoder* /*encoder*/) {};
-            virtual void encoderDecreased(Encoder* /*encoder*/) {};
+            virtual void encoderDoubleClicked(Encoder* /*encoder*/) {}
+            virtual void encoderIncreased(Encoder* /*encoder*/) {}
+            virtual void encoderDecreased(Encoder* /*encoder*/) {}
     };
 
     void addListener(Listener *l);
@@ -21,6 +21,6 @@ public:
     void valueChanged() override;
 private:
     juce::ListenerList <Listener> listeners;
-    int previousValue = 0;
+    double previousValue = 0;
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(Encoder)
 };

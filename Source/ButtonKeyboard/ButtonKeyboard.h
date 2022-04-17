@@ -5,7 +5,7 @@
 class ButtonKeyboard : public juce::MidiKeyboardComponent {
 public:
     ButtonKeyboard(juce::MidiKeyboardState &state, juce::MidiKeyboardComponent::Orientation orientation);
-    ~ButtonKeyboard();
+    ~ButtonKeyboard() override;
 
 	enum ButtonKeyboardColourIds {
 		buttonOutlineColourId = uint32_t(0)
