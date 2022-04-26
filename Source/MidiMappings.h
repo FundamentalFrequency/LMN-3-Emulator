@@ -36,6 +36,3 @@ static constexpr int BUTTON_PRESSED = 127;
 static constexpr int BUTTON_RELEASED = 0;
 
 static constexpr int MIDI_CHANNEL = 10;
-
-
-

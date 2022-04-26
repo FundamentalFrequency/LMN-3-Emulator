@@ -1,15 +1,18 @@
 #pragma once
-#include <juce_gui_basics/juce_gui_basics.h>
-#include <juce_graphics/juce_graphics.h>
-#include <juce_audio_utils/juce_audio_utils.h>
 #include "FontData.h"
+#include <juce_audio_utils/juce_audio_utils.h>
+#include <juce_graphics/juce_graphics.h>
+#include <juce_gui_basics/juce_gui_basics.h>
 
 class EmulatorLookAndFeel : public juce::LookAndFeel_V4 {
-public:
+  public:
     EmulatorLookAndFeel();
-    juce::Font getTextButtonFont(juce::TextButton&, int buttonHeight) override;
+    juce::Font getTextButtonFont(juce::TextButton &, int buttonHeight) override;
 
-    juce::Typeface::Ptr fontAwesomeTypeface = juce::Typeface::createSystemTypefaceFor(FontData::FontAwesome6FreeSolid900_otf, FontData::FontAwesome6FreeSolid900_otfSize);
+    juce::Typeface::Ptr fontAwesomeTypeface =
+        juce::Typeface::createSystemTypefaceFor(
+            FontData::FontAwesome6FreeSolid900_otf,
+            FontData::FontAwesome6FreeSolid900_otfSize);
     juce::Font fontAwesomeFont = juce::Font(fontAwesomeTypeface);
 
     juce::Colour blueColour = juce::Colour(0xff458588);
@@ -27,5 +30,3 @@ public:
     juce::Colour colour3 = whiteColour;
     juce::Colour colour4 = redColour;
 };
-
-

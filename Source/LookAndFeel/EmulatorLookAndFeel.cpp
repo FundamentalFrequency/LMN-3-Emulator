@@ -1,12 +1,10 @@
 #include "EmulatorLookAndFeel.h"
 #include "ButtonKeyboard.h"
 
-EmulatorLookAndFeel::EmulatorLookAndFeel()
-{
-
+EmulatorLookAndFeel::EmulatorLookAndFeel() {
     setColour(juce::DocumentWindow::backgroundColourId, backgroundColour);
 
-    setColour(juce::Label::textColourId, textColour);   
+    setColour(juce::Label::textColourId, textColour);
 
     setColour(juce::ComboBox::backgroundColourId, backgroundColour);
     // This also controls the TextButton outline color for some reason...
@@ -15,7 +13,6 @@ EmulatorLookAndFeel::EmulatorLookAndFeel()
     setColour(juce::PopupMenu::backgroundColourId, backgroundColour);
     setColour(juce::PopupMenu::highlightedTextColourId, backgroundColour);
     setColour(juce::PopupMenu::highlightedBackgroundColourId, textColour);
-
 
     setColour(juce::ScrollBar::thumbColourId, blueColour);
     setColour(juce::ScrollBar::trackColourId, blueColour);
@@ -29,12 +26,15 @@ EmulatorLookAndFeel::EmulatorLookAndFeel()
     setColour(juce::TextButton::textColourOnId, redColour);
     setColour(juce::TextButton::textColourOffId, textColour);
 
-    setColour(juce::MidiKeyboardComponent::mouseOverKeyOverlayColourId, yellowColour.withMultipliedAlpha(.75));
-    setColour(juce::MidiKeyboardComponent::keyDownOverlayColourId, yellowColour);
+    setColour(juce::MidiKeyboardComponent::mouseOverKeyOverlayColourId,
+              yellowColour.withMultipliedAlpha(.75));
+    setColour(juce::MidiKeyboardComponent::keyDownOverlayColourId,
+              yellowColour);
     setColour(ButtonKeyboard::buttonOutlineColourId, whiteColour);
 }
 
-juce::Font EmulatorLookAndFeel::getTextButtonFont(juce::TextButton&, int buttonHeight) {
-    fontAwesomeFont.setHeight(juce::jmin(16.0f, (float) buttonHeight * 0.6f));
+juce::Font EmulatorLookAndFeel::getTextButtonFont(juce::TextButton &,
+                                                  int buttonHeight) {
+    fontAwesomeFont.setHeight(juce::jmin(16.0f, (float)buttonHeight * 0.6f));
     return fontAwesomeFont;
 }

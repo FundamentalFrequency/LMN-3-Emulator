@@ -1,7 +1,7 @@
 # LMN-3-MIDI-Emulator
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
-![screenshot of emulator](http://url/to/img.png)
+![screenshot of emulator](https://github.com/stonepreston/LMN-3-Emulator/blob/main/.github/images/emulator.png)
 
 This emulator allows the user to emulate the LMN-3 Hardware and produces MIDI signals that can be used to control the 
 [LMN-3-DAW](https://github.com/stonepreston/LMN-3-DAW).
@@ -49,5 +49,12 @@ cmake --build build -j8
 
 ## Contributing
 Pull requests are welcome and very much appreciated.
+
+### Code Style
+Please format your code before submitting a PR. It will fail the CI linting check otherwise. You can run the following
+command to format it according to the provided .clang-format file:
+```bash
+find Source/ -iname *.h -o -iname *.cpp | xargs clang-format -i --style=file
+```
 
 
