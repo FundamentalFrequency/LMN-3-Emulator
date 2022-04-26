@@ -37,7 +37,7 @@ sudo apt install build-essential cmake clang llvm
 ### Cloning the Repository
 This repository relies on git submodules. You must clone the submodules as well using:
 ```bash
-git clone --recurse-submodules https://github.com/stonepreston/LMN-3-DAW
+git clone --recurse-submodules https://github.com/stonepreston/LMN-3-Emulator
 ```
 
 ### Building the Project
