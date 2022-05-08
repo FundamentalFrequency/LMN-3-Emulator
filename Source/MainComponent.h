@@ -95,7 +95,7 @@ class MainComponent : public juce::Component,
 
     juce::StringArray row1Icons = {
         juce::String::charToString(0xf0c4), juce::String::charToString(0xf0ea),
-        juce::String::charToString(0xf715), juce::String::charToString(0xf0c7),
+        juce::String::charToString(0xe568), juce::String::charToString(0xf0c7),
         juce::String::charToString(0xf2ea)};
 
     juce::StringArray row2Icons = {
