@@ -4,6 +4,7 @@ Encoder::Encoder() {
     setSliderStyle(juce::Slider::SliderStyle::RotaryHorizontalVerticalDrag);
     setRange(0.0, 127.0, 1.0);
     setValue(0.0);
+    setVelocityBasedMode(false);
     setTextBoxStyle(juce::Slider::TextEntryBoxPosition::NoTextBox, true, 0, 0);
     setRotaryParameters(0, juce::MathConstants<float>::twoPi, false);
 }
@@ -40,4 +41,11 @@ void Encoder::valueChanged() {
         }
     }
     previousValue = getValue();
+}
+
+void Encoder::modifierKeysChanged(const juce::ModifierKeys &modifiers) {
+    // This is necessary to keep the slider from capturing (and not passing up)
+    // the ctrl key events
+    if (getParentComponent() != nullptr)
+        getParentComponent()->modifierKeysChanged(modifiers);
 }

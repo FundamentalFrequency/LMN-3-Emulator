@@ -19,6 +19,7 @@ class Encoder : public juce::Slider {
 
     void mouseDoubleClick(const juce::MouseEvent &) override;
     void valueChanged() override;
+    void modifierKeysChanged(const juce::ModifierKeys &) override;
 
   private:
     juce::ListenerList<Listener> listeners;
