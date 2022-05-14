@@ -1,4 +1,4 @@
-# LMN-3-MIDI-Emulator
+# LMN-3-Emulator
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
 ![screenshot of emulator](https://github.com/stonepreston/LMN-3-Emulator/blob/main/.github/images/emulator.png)
