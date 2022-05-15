@@ -25,6 +25,7 @@ class MainComponent : public juce::Component,
     void paint(juce::Graphics &) override;
     void resized() override;
     void buttonClicked(juce::Button *button) override;
+    void buttonStateChanged(juce::Button *button) override;
     void encoderDoubleClicked(Encoder *encoder) override;
     void encoderIncreased(Encoder *encoder) override;
     void encoderDecreased(Encoder *encoder) override;
@@ -88,6 +89,8 @@ class MainComponent : public juce::Component,
     juce::OwnedArray<juce::TextButton> row3;
     juce::OwnedArray<juce::TextButton> row4;
 
+    std::map<juce::String, juce::Button::ButtonState> previousButtonStates;
+
     juce::StringArray row0Icons = {
         juce::String::charToString(0xf363), juce::String::charToString(0xf08b),
         juce::String::charToString(0xf090), juce::String::charToString(0x2b),
@@ -129,6 +132,8 @@ class MainComponent : public juce::Component,
     bool isAddingFromMidiInput = false;
 
     bool isCtrlDown = false;
+    bool isPlusDown = false;
+    bool isMinusDown = false;
     int currentOctave = 0;
 
     // This is used to dispach an incoming message to the message thread
@@ -199,6 +204,8 @@ class MainComponent : public juce::Component,
     int getCCValueForCurrentOctave();
     void increaseOctave();
     void decreaseOctave();
+
+    bool keyStateChanged(bool isKeyDown) override;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(MainComponent)
 };
