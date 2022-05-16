@@ -70,8 +70,9 @@ void MainComponent::initializeRow0Buttons() {
         row0.add(button);
         button->addListener(this);
         button->setName("R0C" + std::to_string(i));
-        previousButtonStates.insert(std::pair<juce::String, juce::Button::ButtonState>(button->getName(),
-                                                                                       button->getState()));
+        previousButtonStates.insert(
+            std::pair<juce::String, juce::Button::ButtonState>(
+                button->getName(), button->getState()));
         juce::String buttonText = row0Icons[i - 5];
         button->setButtonText(buttonText);
         addAndMakeVisible(button);
@@ -85,8 +86,9 @@ void MainComponent::initializeRow1Buttons() {
         row1.add(button);
         button->addListener(this);
         button->setName("R1C" + std::to_string(i));
-        previousButtonStates.insert(std::pair<juce::String, juce::Button::ButtonState>(button->getName(),
-                                                                                       button->getState()));
+        previousButtonStates.insert(
+            std::pair<juce::String, juce::Button::ButtonState>(
+                button->getName(), button->getState()));
         juce::String buttonText = row1Icons[i - 5];
         button->setButtonText(buttonText);
         addAndMakeVisible(button);
@@ -100,8 +102,9 @@ void MainComponent::initializeRow2Buttons() {
         row2.add(button);
         button->addListener(this);
         button->setName("R2C" + std::to_string(i));
-        previousButtonStates.insert(std::pair<juce::String, juce::Button::ButtonState>(button->getName(),
-                                                                                       button->getState()));
+        previousButtonStates.insert(
+            std::pair<juce::String, juce::Button::ButtonState>(
+                button->getName(), button->getState()));
         juce::String buttonText = row2Icons[i - 5];
         button->setButtonText(buttonText);
         addAndMakeVisible(button);
@@ -467,77 +470,79 @@ void MainComponent::setMidiMessagesBoxBounds() {
 }
 
 void MainComponent::buttonClicked(juce::Button *button) {
-//    auto name = button->getName();
-//    int ccType = 0;
-//    int ccValue = BUTTON_RELEASED;
-//
-//    // Buttons
-//    if (name == "R0C5") {
-//        ccType = LOOP_BUTTON;
-//    } else if (name == "R0C6") {
-//        ccType = LOOP_IN_BUTTON;
-//    } else if (name == "R0C7") {
-//        ccType = LOOP_OUT_BUTTON;
-//    } else if (name == "R0C8") {
-//        if (isCtrlDown) {
-//            increaseOctave();
-//            ccType = OCTAVE_CHANGE;
-//            ccValue = getCCValueForCurrentOctave();
-//        } else {
-//            ccType = PLUS_BUTTON;
-//        }
-//    } else if (name == "R0C9") {
-//        if (isCtrlDown) {
-//            decreaseOctave();
-//            ccType = OCTAVE_CHANGE;
-//            ccValue = getCCValueForCurrentOctave();
-//        } else {
-//            ccType = MINUS_BUTTON;
-//        }
-//    } else if (name == "R1C5") {
-//        ccType = CUT_BUTTON;
-//    } else if (name == "R1C6") {
-//        ccType = PASTE_BUTTON;
-//    } else if (name == "R1C7") {
-//        ccType = SLICE_BUTTON;
-//    } else if (name == "R1C8") {
-//        ccType = SAVE_BUTTON;
-//    } else if (name == "R1C9") {
-//        ccType = UNDO_BUTTON;
-//    } else if (name == "R2C5") {
-//        ccType = CONTROL_BUTTON;
-//    } else if (name == "R2C6") {
-//        ccType = RECORD_BUTTON;
-//    } else if (name == "R2C7") {
-//        ccType = PLAY_BUTTON;
-//    } else if (name == "R2C8") {
-//        ccType = STOP_BUTTON;
-//    } else if (name == "R2C9") {
-//        ccType = SETTINGS_BUTTON;
-//    } else if (name == "R2C10") {
-//        ccType = TEMPO_BUTTON;
-//    } else if (name == "R2C11") {
-//        ccType = MIXER_BUTTON;
-//    } else if (name == "R2C12") {
-//        ccType = TRACKS_BUTTON;
-//    } else if (name == "R2C13") {
-//        ccType = PLUGINS_BUTTON;
-//    } else if (name == "R2C14") {
-//        ccType = MODIFIERS_BUTTON;
-//    } else if (name == "R2C15") {
-//        ccType = SEQUENCERS_BUTTON;
-//    }
-//
-//    sendCCMessage(MIDI_CHANNEL, ccType, ccValue);
+    //    auto name = button->getName();
+    //    int ccType = 0;
+    //    int ccValue = BUTTON_RELEASED;
+    //
+    //    // Buttons
+    //    if (name == "R0C5") {
+    //        ccType = LOOP_BUTTON;
+    //    } else if (name == "R0C6") {
+    //        ccType = LOOP_IN_BUTTON;
+    //    } else if (name == "R0C7") {
+    //        ccType = LOOP_OUT_BUTTON;
+    //    } else if (name == "R0C8") {
+    //        if (isCtrlDown) {
+    //            increaseOctave();
+    //            ccType = OCTAVE_CHANGE;
+    //            ccValue = getCCValueForCurrentOctave();
+    //        } else {
+    //            ccType = PLUS_BUTTON;
+    //        }
+    //    } else if (name == "R0C9") {
+    //        if (isCtrlDown) {
+    //            decreaseOctave();
+    //            ccType = OCTAVE_CHANGE;
+    //            ccValue = getCCValueForCurrentOctave();
+    //        } else {
+    //            ccType = MINUS_BUTTON;
+    //        }
+    //    } else if (name == "R1C5") {
+    //        ccType = CUT_BUTTON;
+    //    } else if (name == "R1C6") {
+    //        ccType = PASTE_BUTTON;
+    //    } else if (name == "R1C7") {
+    //        ccType = SLICE_BUTTON;
+    //    } else if (name == "R1C8") {
+    //        ccType = SAVE_BUTTON;
+    //    } else if (name == "R1C9") {
+    //        ccType = UNDO_BUTTON;
+    //    } else if (name == "R2C5") {
+    //        ccType = CONTROL_BUTTON;
+    //    } else if (name == "R2C6") {
+    //        ccType = RECORD_BUTTON;
+    //    } else if (name == "R2C7") {
+    //        ccType = PLAY_BUTTON;
+    //    } else if (name == "R2C8") {
+    //        ccType = STOP_BUTTON;
+    //    } else if (name == "R2C9") {
+    //        ccType = SETTINGS_BUTTON;
+    //    } else if (name == "R2C10") {
+    //        ccType = TEMPO_BUTTON;
+    //    } else if (name == "R2C11") {
+    //        ccType = MIXER_BUTTON;
+    //    } else if (name == "R2C12") {
+    //        ccType = TRACKS_BUTTON;
+    //    } else if (name == "R2C13") {
+    //        ccType = PLUGINS_BUTTON;
+    //    } else if (name == "R2C14") {
+    //        ccType = MODIFIERS_BUTTON;
+    //    } else if (name == "R2C15") {
+    //        ccType = SEQUENCERS_BUTTON;
+    //    }
+    //
+    //    sendCCMessage(MIDI_CHANNEL, ccType, ccValue);
 }
 
 void MainComponent::buttonStateChanged(juce::Button *button) {
     auto newButtonState = button->getState();
     auto previousButtonState = previousButtonStates.at(button->getName());
     // only fire on button push and button release
-    auto buttonPressed = newButtonState == juce::Button::ButtonState::buttonDown &&
-            previousButtonState == juce::Button::ButtonState::buttonOver;
-    auto buttonReleased = previousButtonState == juce::Button::ButtonState::buttonDown;
+    auto buttonPressed =
+        newButtonState == juce::Button::ButtonState::buttonDown &&
+        previousButtonState == juce::Button::ButtonState::buttonOver;
+    auto buttonReleased =
+        previousButtonState == juce::Button::ButtonState::buttonDown;
     if (buttonPressed || buttonReleased) {
         auto name = button->getName();
         int ccType = 0;
@@ -555,7 +560,8 @@ void MainComponent::buttonStateChanged(juce::Button *button) {
         } else if (name == "R0C8") {
             if (isCtrlDown) {
                 // Only send this on button down
-                if (button->getState() == juce::Button::ButtonState::buttonDown) {
+                if (button->getState() ==
+                    juce::Button::ButtonState::buttonDown) {
                     increaseOctave();
                     ccType = OCTAVE_CHANGE;
                     ccValue = getCCValueForCurrentOctave();
@@ -566,7 +572,8 @@ void MainComponent::buttonStateChanged(juce::Button *button) {
         } else if (name == "R0C9") {
             if (isCtrlDown) {
                 // Only send this on button down
-                if (button->getState() == juce::Button::ButtonState::buttonDown) {
+                if (button->getState() ==
+                    juce::Button::ButtonState::buttonDown) {
                     decreaseOctave();
                     ccType = OCTAVE_CHANGE;
                     ccValue = getCCValueForCurrentOctave();
@@ -801,8 +808,10 @@ void MainComponent::decreaseOctave() {
 
 bool MainComponent::keyStateChanged(bool isKeyDown) {
     if (!isCtrlDown) {
-        auto newPlusIsDown = juce::KeyPress::isKeyCurrentlyDown(juce::KeyPress('=').getKeyCode());
-        auto newMinusIsDown = juce::KeyPress::isKeyCurrentlyDown(juce::KeyPress('-').getKeyCode());
+        auto newPlusIsDown = juce::KeyPress::isKeyCurrentlyDown(
+            juce::KeyPress('=').getKeyCode());
+        auto newMinusIsDown = juce::KeyPress::isKeyCurrentlyDown(
+            juce::KeyPress('-').getKeyCode());
         if (newPlusIsDown != isPlusDown) {
             isPlusDown = newPlusIsDown;
             if (newPlusIsDown)
@@ -818,7 +827,6 @@ bool MainComponent::keyStateChanged(bool isKeyDown) {
             else
                 sendCCMessage(MIDI_CHANNEL, MINUS_BUTTON, BUTTON_RELEASED);
         }
-
     }
 
     // Pass the event up to whoever wants it
