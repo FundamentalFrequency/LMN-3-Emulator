@@ -1,4 +1,4 @@
-name: linting
+name: pull_request
 
 on: [pull_request]
 
