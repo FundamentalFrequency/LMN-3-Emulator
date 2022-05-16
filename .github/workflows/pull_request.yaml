@@ -14,6 +14,7 @@ jobs:
           clangFormatVersion: 10
 
   build_x86_64:
+    needs: [linting]
     runs-on: ubuntu-20.04
     container: stonepreston/juce_compiler:latest
 
