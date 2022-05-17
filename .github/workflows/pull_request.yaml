@@ -25,7 +25,5 @@ jobs:
 
       - name: build using cmake
         run: |
-          git clone --recurse-submodules https://github.com/stonepreston/LMN-3-DAW
-          cd ./LMN-3-DAW
           cmake -B build -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_C_COMPILER=clang -DCMAKE_BUILD_TYPE=Release
           cmake --build build -j8
