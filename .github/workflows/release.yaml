@@ -20,7 +20,7 @@ jobs:
         run: |
           cmake -B build -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_C_COMPILER=clang -DCMAKE_BUILD_TYPE=Debug
           cmake --build build -j8
-          zip LMN-3-Emulator-x86_64.zip ./build/LMN-3-Emulator_artefacts/Release/LMN-3-Emulator ./LICENSE
+          zip -r -j LMN-3-Emulator-x86_64.zip ./build/LMN-3-Emulator_artefacts/Release/LMN-3-Emulator ./LICENSE
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v3
