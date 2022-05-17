@@ -43,6 +43,7 @@ MainComponent::~MainComponent() {
     keyboardState.removeListener(this);
 
     joystick.removeListener(this);
+    setLookAndFeel(nullptr);
 }
 
 void MainComponent::timerCallback() {
