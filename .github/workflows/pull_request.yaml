@@ -25,6 +25,7 @@ jobs:
 
       - name: build using cmake
         run: |
-          ls /usr/lib/llvm-10/lib
+          git clone https://github.com/stonepreston/LMN-3-DAW
+          cd ./LMN-3-DAW
           cmake -B build -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_C_COMPILER=clang -DCMAKE_BUILD_TYPE=Release
-          cmake --build build --target LMN-3-Emulator -j8
+          cmake --build build -j8
