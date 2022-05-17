@@ -57,7 +57,6 @@ target_link_libraries(LMN-3-Emulator
         juce::juce_audio_utils
     PUBLIC
         juce::juce_recommended_config_flags
-        # requires gold
-        # juce::juce_recommended_lto_flags
+        juce::juce_recommended_lto_flags
         juce::juce_recommended_warning_flags
 )
