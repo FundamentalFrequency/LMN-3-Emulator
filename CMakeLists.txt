@@ -1,10 +1,11 @@
 cmake_minimum_required(VERSION 3.16)
-
-project(LMN-3-EMULATOR VERSION 0.1.0)
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+project(LMN-3-Emulator VERSION 0.1.0)
 
 add_subdirectory(JUCE)            
 
-juce_add_gui_app(LMN-3-EMULATOR
+juce_add_gui_app(LMN-3-Emulator
     # VERSION ...                       # Set this if the app version is different to the project version
     # ICON_BIG ...                      # ICON_* arguments specify a path to an image file to use as an icon
     # ICON_SMALL ...
@@ -12,7 +13,9 @@ juce_add_gui_app(LMN-3-EMULATOR
     # COMPANY_NAME ...                  # Specify the name of the app's author
     PRODUCT_NAME "LMN-3-Emulator")      # The name of the final executable, which can differ from the target name
 
-target_sources(LMN-3-EMULATOR
+target_compile_features(LMN-3-Emulator  PRIVATE cxx_std_17)
+
+target_sources(LMN-3-Emulator
     PRIVATE
         Source/Main.cpp
         Source/MainComponent.cpp
@@ -21,7 +24,7 @@ target_sources(LMN-3-EMULATOR
         Source/LookAndFeel/EmulatorLookAndFeel.cpp
 )
 
-target_include_directories(LMN-3-EMULATOR
+target_include_directories(LMN-3-Emulator
     PUBLIC
         Source/
         Source/Encoder
@@ -29,13 +32,13 @@ target_include_directories(LMN-3-EMULATOR
         Source/LookAndFeel
 )
 
-target_compile_definitions(LMN-3-EMULATOR
+target_compile_definitions(LMN-3-Emulator
     PRIVATE
         # JUCE_WEB_BROWSER and JUCE_USE_CURL would be on by default, but you might not need them.
         JUCE_WEB_BROWSER=0  # If you remove this, add `NEEDS_WEB_BROWSER TRUE` to the `juce_add_gui_app` call
         JUCE_USE_CURL=0     # If you remove this, add `NEEDS_CURL TRUE` to the `juce_add_gui_app` call
-        JUCE_APPLICATION_NAME_STRING="$<TARGET_PROPERTY:LMN-3-EMULATOR,JUCE_PRODUCT_NAME>"
-        JUCE_APPLICATION_VERSION_STRING="$<TARGET_PROPERTY:LMN-3-EMULATOR,JUCE_VERSION>")
+        JUCE_APPLICATION_NAME_STRING="$<TARGET_PROPERTY:LMN-3-Emulator,JUCE_PRODUCT_NAME>"
+        JUCE_APPLICATION_VERSION_STRING="$<TARGET_PROPERTY:LMN-3-Emulator,JUCE_VERSION>")
 
 
 juce_add_binary_data(FontData HEADER_NAME FontData.h NAMESPACE FontData SOURCES
@@ -45,7 +48,7 @@ juce_add_binary_data(FontData HEADER_NAME FontData.h NAMESPACE FontData SOURCES
 )
 
 
-target_link_libraries(LMN-3-EMULATOR
+target_link_libraries(LMN-3-Emulator
     PRIVATE
         FontData
         juce::juce_gui_extra

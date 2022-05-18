@@ -32,7 +32,7 @@ sudo apt install libasound2-dev libjack-jackd2-dev \
 ### Build Dependencies
 You will also need to run the following command to install the build dependencies:
 ```bash
-sudo apt install build-essential cmake clang llvm 
+sudo apt install build-essential cmake clang llvm lld
 ```
 
 ### Cloning the Repository
@@ -44,7 +44,7 @@ git clone --recurse-submodules https://github.com/stonepreston/LMN-3-Emulator
 ### Building the Project
 CMake is used to build the project. Execute the following commands to build all project targets:
 ```bash
-cmake -B build -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_C_COMPILER=clang -DCMAKE_BUILD_TYPE=Release
+cmake -B build -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_FLAGS=-fuse-ld=lld -DCMAKE_BUILD_TYPE=Release
 cmake --build build -j8
 ```
 
