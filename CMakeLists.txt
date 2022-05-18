@@ -1,5 +1,8 @@
 cmake_minimum_required(VERSION 3.16)
 
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
 project(LMN-3-Emulator VERSION 0.1.0)
 
 add_subdirectory(JUCE)            
@@ -11,6 +14,9 @@ juce_add_gui_app(LMN-3-Emulator
     # DOCUMENT_EXTENSIONS ...           # Specify file extensions that should be associated with this app
     # COMPANY_NAME ...                  # Specify the name of the app's author
     PRODUCT_NAME "LMN-3-Emulator")      # The name of the final executable, which can differ from the target name
+
+
+target_compile_features(LMN-3-Emulator  PRIVATE cxx_std_17)
 
 target_sources(LMN-3-Emulator
     PRIVATE

@@ -13,18 +13,17 @@ jobs:
           extensions: 'h,cpp'
           clangFormatVersion: 10
 
-  build_x86_64:
-    needs: [linting]
+  build:
+    needs: linting
     runs-on: ubuntu-20.04
     container: stonepreston/juce_compiler:latest
-
     steps:
       - name: checkout
         uses: actions/checkout@v2
         with:
           submodules: recursive
 
-      - name: build
+      - name: build using cmake
         run: |
-          cmake -B build -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_C_COMPILER=clang -DCMAKE_BUILD_TYPE=Debug
+          cmake -B build -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_FLAGS=-fuse-ld=lld -DCMAKE_BUILD_TYPE=Release
           cmake --build build -j8
