@@ -15,6 +15,9 @@ repositories:
 - [LMN-3-Emulator](https://github.com/stonepreston/LMN-3-Emulator)
 - [LMN-3-Keycaps](https://github.com/stonepreston/LMN-3-Keycaps)
 
+## Releases
+Releases can be viewed and downloaded [here](https://github.com/stonepreston/LMN-3-Emulator/releases)
+
 ## Dependencies
 Some dependencies are necessary to run the software. You can install them all with the following command:
 ```bash
