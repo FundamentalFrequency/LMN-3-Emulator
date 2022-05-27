@@ -20,7 +20,7 @@ Releases can be viewed and downloaded [here](https://github.com/stonepreston/LMN
 
 ## Building From Source
 
-### Build Dependencies
+### Dependencies
 You will need to run the following command to install the build dependencies:
 ```bash
 sudo apt install apt install libasound2-dev libjack-jackd2-dev \
@@ -56,7 +56,3 @@ commands to format it according to the provided .clang-format file:
 sudo apt install clang-format # install clang-format if you don't already have it
 find Source/ -iname *.h -o -iname *.cpp | xargs clang-format -i --style=file
 ```
-
-
-
-
