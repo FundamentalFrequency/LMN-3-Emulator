@@ -18,24 +18,19 @@ repositories:
 ## Releases
 Releases can be viewed and downloaded [here](https://github.com/stonepreston/LMN-3-Emulator/releases)
 
-## Dependencies
-Some dependencies are necessary to run the software. You can install them all with the following command:
+## Building From Source
+
+### Build Dependencies
+You will need to run the following command to install the build dependencies:
 ```bash
-sudo apt install libasound2-dev libjack-jackd2-dev \
+sudo apt install apt install libasound2-dev libjack-jackd2-dev \
     ladspa-sdk \
     libcurl4-openssl-dev  \
     libfreetype6-dev \
     libx11-dev libxcomposite-dev libxcursor-dev libxcursor-dev libxext-dev libxinerama-dev libxrandr-dev libxrender-dev \
     libwebkit2gtk-4.0-dev \
-    libglu1-mesa-dev mesa-common-dev
-```
-
-## Building From Source
-
-### Build Dependencies
-You will also need to run the following command to install the build dependencies:
-```bash
-sudo apt install build-essential cmake clang llvm lld
+    libglu1-mesa-dev mesa-common-dev \ 
+    build-essential cmake clang llvm lld
 ```
 
 ### Cloning the Repository
