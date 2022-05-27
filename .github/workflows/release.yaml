@@ -64,6 +64,7 @@ jobs:
 
       - name: build
         run: |
+          apt-get update && apt-get install -y --no-install-recommends pkg-config
           cmake -B build -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_C_COMPILER=clang -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS=-fuse-ld=lld
           cmake --build build -j8
           zip -r -j LMN-3-Emulator-aarch64-linux-gnu.zip ./build/LMN-3-Emulator_artefacts/Release/LMN-3-Emulator ./LICENSE
