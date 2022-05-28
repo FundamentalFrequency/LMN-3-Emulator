@@ -41,7 +41,7 @@ jobs:
 
       - name: build
         run: |
-          cmake -B build -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_C_COMPILER=clang -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS=-fuse-ld=lld
+          cmake -B build -DCMAKE_TOOLCHAIN_FILE=/toolchain/toolchain.cmake -DPACKAGE_TESTS=OFF -DCMAKE_BUILD_TYPE=Release 
           cmake --build build -j8
           zip -r -j LMN-3-Emulator-arm-linux-gnueabihf.zip ./build/LMN-3-Emulator_artefacts/Release/LMN-3-Emulator ./LICENSE
 
@@ -64,7 +64,7 @@ jobs:
 
       - name: build
         run: |
-          cmake -B build -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_C_COMPILER=clang -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS=-fuse-ld=lld
+          cmake -B build -DCMAKE_TOOLCHAIN_FILE=/toolchain/toolchain.cmake -DPACKAGE_TESTS=OFF -DCMAKE_BUILD_TYPE=Release 
           cmake --build build -j8
           zip -r -j LMN-3-Emulator-aarch64-linux-gnu.zip ./build/LMN-3-Emulator_artefacts/Release/LMN-3-Emulator ./LICENSE
 
