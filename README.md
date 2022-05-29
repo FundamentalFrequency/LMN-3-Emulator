@@ -17,7 +17,7 @@ repositories:
 - [LMN-3-Keycaps](https://github.com/stonepreston/LMN-3-Keycaps)
 
 ## Releases
-Releases can be viewed and downloaded [here](https://github.com/stonepreston/LMN-3-Emulator/releases)
+Releases can be downloaded [here](https://github.com/stonepreston/LMN-3-Emulator/releases)
 
 ## Building From Source
 
