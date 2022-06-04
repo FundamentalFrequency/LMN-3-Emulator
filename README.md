@@ -1,25 +1,23 @@
 # LMN-3-Emulator
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
-![screenshot of emulator](https://github.com/stonepreston/LMN-3-Emulator/blob/main/.github/images/emulator.png)
+![screenshot of emulator](images/emulator.png)
 
 This emulator allows the user to emulate the LMN-3 Hardware and produces MIDI signals that can be used to control the 
-[LMN-3-DAW](https://github.com/stonepreston/LMN-3-DAW).
+[LMN-3-DAW](https://github.com/FundamentalFrequency/LMN-3-DAW).
 
-It is a part of the larger LMN-3 project, composed of the following
-repositories:
-- [LMN-3-Build-Guide](https://github.com/stonepreston/LMN-3-Build-Guide)
-- [LMN-3-DAW](https://github.com/stonepreston/LMN-3-DAW)
-- [LMN-3-MCAD](https://github.com/stonepreston/LMN-3-MCAD)
-- [LMN-3-ECAD](https://github.com/stonepreston/LMN-3-ECAD)
-- [LMN-3-Firmware](https://github.com/stonepreston/LMN-3-Firmware)
-- [LMN-3-Emulator](https://github.com/stonepreston/LMN-3-Emulator)
-- [LMN-3-Keycaps](https://github.com/stonepreston/LMN-3-Keycaps)
+If you would like to support the project, please consider becoming a [sponsor](https://github.com/sponsors/stonepreston).
 
 ## Releases
-Releases can be downloaded [here](https://github.com/stonepreston/LMN-3-Emulator/releases)
+Releases can be downloaded [here](https://github.com/FundamentalFrequency/LMN-3-Emulator/releases)
 
 ## Building From Source
+
+### Cloning the Repository
+This repository relies on git submodules. You must clone the submodules as well using:
+```bash
+git clone --recurse-submodules https://github.com/FundamentalFrequency/LMN-3-Emulator
+```
 
 ### Dependencies
 You will need to run the following command to install the build dependencies:
@@ -32,12 +30,6 @@ sudo apt install apt install libasound2-dev libjack-jackd2-dev \
     libwebkit2gtk-4.0-dev \
     libglu1-mesa-dev mesa-common-dev \ 
     build-essential cmake clang llvm lld
-```
-
-### Cloning the Repository
-This repository relies on git submodules. You must clone the submodules as well using:
-```bash
-git clone --recurse-submodules https://github.com/stonepreston/LMN-3-Emulator
 ```
 
 ### Building the Project
